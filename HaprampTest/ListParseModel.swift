@@ -10,20 +10,17 @@ import Foundation
 //MARK: Parser to parse API IN Codelable
 class ListParseModel{
     
-    var list = ListModel()
+    var list : ListModel?
 
-    func parseUser(data: Data)-> ListModel{
+    func parseUser(data: Array<AnyObject>)-> ListModel?{
         print("data to parse:\(data)")
-        let decoder = JSONDecoder()
-        do
-        {
-            list = try decoder.decode(ListModel.self, from: data)
-            return list
+        var parsedModel = [ListStructre]()
+        for i in 0 ..< data.count{
+            let dict:Dictionary<String,AnyObject> = (data[i] as? Dictionary<String,AnyObject>)!
+            let obj = ListStructre(data: dict)
+            parsedModel.append(obj)
         }
-        catch
-        {
-            print(error.localizedDescription)
-            return list
-        }
+        list = ListModel(data: parsedModel)
+        return list
     }
 }

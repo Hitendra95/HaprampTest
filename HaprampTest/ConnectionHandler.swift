@@ -14,18 +14,23 @@ class ConnectionHandler{
     
     //MARK: MAke API call
     func makeHttpRequest(url: String, reqtype: HTTPMethod,handler:AppHandler, retrycount:Int){
-        print("url",url)
-        print("restype",reqtype)
         if retrycount > 0{
-            AF.request(url, method: reqtype).responseJSON {
+            let params = ["client_id":"D-me78N7gO814UXNRDS96J12JuKyYMBjv_gbV03X7Jw"]
+            print("URL",url)
+            AF.request(url, method: reqtype,parameters: params).responseJSON {
                 response in
                 print("res",response.result)
                 switch response.result {
                 case .success:
                     
-                    guard let data = response.value as? Array<AnyObject> else {return}
+                    if let data = response.value as? Array<AnyObject>{
                     print("test",data)
                     handler.handleMessage(data: data)
+                    }else{
+                        guard let data = response.value as? Dictionary<String,AnyObject> else {return}
+                        print("test")
+                        handler.handleMessage(data: data)
+                    }
                     break
                 case .failure(let error):
                     print(error)

@@ -7,6 +7,16 @@
 
 import Foundation
 //MAKR: Codeable model of RandomImage
-struct RandomImageModel: Codable {
-    var data: [String]?
+
+// MARK: - RandomDataModel
+struct DataModel: Codable {
+    let id: String?
+    let url: String?
+    
+    init(data: Dictionary<String,AnyObject>){
+        id = data["id"] as? String ?? ""
+        let urls = data["urls"] as? [String:AnyObject]
+        url = urls?["small"] as? String ?? ""
+    }
 }
+
