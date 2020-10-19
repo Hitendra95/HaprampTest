@@ -11,16 +11,31 @@ import SkeletonView
 
 class ListViewController: UINavigationController,UITableViewDelegate,UITableViewDataSource{
     var tableview = UITableView()
-    lazy var banner = UIView()
+    lazy var banner = UIImageView()
+    var listData: [ListStructre]?
+    var bannerImage: DataModel?
+    
+    // Aurto refresh
+    lazy var refreshControl : UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = UIColor.white
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to Refresh", attributes: [NSAttributedString.Key.foregroundColor:UIColor.white])
+        refreshControl.addTarget(self, action: #selector(fetchdata), for: .valueChanged)
+        return refreshControl
+    }()
     
     override func viewDidLoad() {
         setUI()
         fetchdata()
     }
     
-    func fetchdata(){
-        GetList()
-        GetRandomImage()
+    @objc func fetchdata(){
+        banner.showAnimatedGradientSkeleton()
+        DispatchQueue.global().asyncAfter(deadline: .now()+2) {
+            self.GetList()
+            self.GetRandomImage()
+        }
+      
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -34,14 +49,17 @@ class ListViewController: UINavigationController,UITableViewDelegate,UITableView
     }
     
     func setUI(){
+        self.view.backgroundColor = .white
+        banner.isSkeletonable = true
         let button = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.refresh, target: self, action: nil)
         navigationItem.leftBarButtonItem = button
         tableview.register(CustomCell.self, forCellReuseIdentifier: CustomCell.reuseIdentifier)
-        tableview.dataSource = self
-        tableview.delegate = self
+        tableview.refreshControl = refreshControl
         tableview.separatorStyle = .none
         self.view.addSubview(banner)
         self.view.addSubview(tableview)
+        tableview.dataSource = self
+        tableview.delegate = self
         setConstraints()
 
 
@@ -55,19 +73,50 @@ class ListViewController: UINavigationController,UITableViewDelegate,UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableview.dequeueReusableCell(withIdentifier: CustomCell.reuseIdentifier) as! CustomCell
+        cell.displayImage.image = nil
         cell.selectionStyle = .none
+        guard let data = listData?[indexPath.section] else {return cell}
+        cell.setData(data: data)
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return 1
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return listData?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if  ((indexPath.item / 2) == 0) {
-            return 213
+            if  ((indexPath.item / 2) == 0) {
+                    return 213
+                }else{
+                    return 416
+            }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let view = UIView()
+        view.backgroundColor = .white
+        return view
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 8
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView()
+        view.backgroundColor = .white
+        return view
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0{
+            return 8
         }else{
-            return 416
+            return 0
         }
     }
 }
@@ -89,15 +138,15 @@ extension ListViewController:UpdateViewProtocol{
     
     //MARK: Handle update Notify from handlers
     func updateView(event: Int, eventtype: Int) {
-        
+        self.refreshControl.endRefreshing()
         switch event {
             case NetworkEvents.EVENT_GET_LIST:
                 switch eventtype{
                     case ConnectionModel.EVENT_TYPE_SUCCESS:
-                        guard let response = ModelFacade.sharedInstanceModelFacade.getListModel().list.data else {return}
+                        guard let response = ModelFacade.sharedInstanceModelFacade.getListModel().list?.data else {return}
                         print("response \(response)")
-                        //self.list = response
-                        //self.tableview.reloadData()
+                        //print("respone count: \(response.count)")
+                        self.listData = response
                     case ConnectionModel.EVENT_TYPE_ERROR:
                         displayAlert(message: Constants.ERROR)
         
@@ -110,10 +159,10 @@ extension ListViewController:UpdateViewProtocol{
         case NetworkEvents.EVENT_GET_RandomImage:
             switch eventtype{
                 case ConnectionModel.EVENT_TYPE_SUCCESS:
-                    guard let response = ModelFacade.sharedInstanceModelFacade.getRandomImage().randomImage.data else {return}
+                    guard let response = ModelFacade.sharedInstanceModelFacade.getRandomImage().randomImage else {return}
                     print("response \(response)")
-                    //self.list = response
-                    //self.tableview.reloadData()
+                    self.banner.loadImageUsingCacheWithUrl(urlString: response.url ?? "")
+                    self.banner.hideSkeleton()
                 case ConnectionModel.EVENT_TYPE_ERROR:
                     displayAlert(message: Constants.ERROR)
     
@@ -127,6 +176,7 @@ extension ListViewController:UpdateViewProtocol{
                 print("default block")
         
         }
+        self.tableview.reloadData()
     }
     
     //MARK: Show ALert

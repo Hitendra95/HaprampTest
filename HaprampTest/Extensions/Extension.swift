@@ -38,3 +38,53 @@ func setAnchors(top:NSLayoutYAxisAnchor?,left:NSLayoutXAxisAnchor?,bottom:NSLayo
   }
 }
 }
+
+    func performUIUpdatesOnMain(_ updates: @escaping () -> Void) {
+        DispatchQueue.main.async {
+            updates()
+        }
+    }
+
+let imageCache = NSCache<AnyObject, AnyObject>()
+extension UIImageView
+{
+    /**
+     *  loads image from url
+     *  Save loaded image in cache memory
+     */
+
+    func loadImageUsingCacheWithUrl(urlString: String) {
+        self.image = nil
+
+        /// check for cache
+        if let cachedImage = imageCache.object(forKey: urlString as AnyObject) as? UIImage {
+            self.image = cachedImage
+            return
+        }
+
+        /// download image from url
+        if urlString == ""
+        {
+            return
+        }
+        let url = URL(string: urlString)
+        if url != nil
+        {
+        //print("url abc  : \(url)")
+        URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) -> Void in
+
+            guard error == nil
+                else { return }
+            guard let downloadedImage = UIImage(data: data!)
+                else {return }
+
+            performUIUpdatesOnMain {
+                imageCache.setObject(downloadedImage, forKey: urlString as AnyObject)
+                self.image = downloadedImage
+            }
+
+
+        }).resume()
+        }
+    }
+}

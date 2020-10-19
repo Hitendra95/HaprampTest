@@ -31,9 +31,11 @@ class EventHanlders: AppHandler
     }
     
     func handleMessage(data: Data){
-        switch eventId {
-        case NetworkEvents.EVENT_GET_LIST:
-            let _ = ModelFacade.sharedInstanceModelFacade.getListModel().parseUser(data: data)
+        BaseModel.sharedInstanceBaseModel.notifyView(event: eventId, eventtype: ConnectionModel.EVENT_TYPE_SUCCESS)
+    }
+    
+    func handleMessage(data: Dictionary<String, AnyObject>) {
+        switch eventId{
         case NetworkEvents.EVENT_GET_RandomImage:
             let _ = ModelFacade.sharedInstanceModelFacade.getRandomImage().parseUser(data: data)
         default:
@@ -43,6 +45,12 @@ class EventHanlders: AppHandler
     }
     
     func handleMessage(data: Array<AnyObject>) {
+        switch eventId {
+        case NetworkEvents.EVENT_GET_LIST:
+            let _ = ModelFacade.sharedInstanceModelFacade.getListModel().parseUser(data: data)
+        default:
+            print("test")
+        }
         BaseModel.sharedInstanceBaseModel.notifyView(event: eventId, eventtype: ConnectionModel.EVENT_TYPE_SUCCESS)
     }
     
