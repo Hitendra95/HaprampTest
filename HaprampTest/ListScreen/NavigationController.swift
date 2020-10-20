@@ -10,6 +10,7 @@ import UIKit
 
 //Mark: Set navigation
 class NavigationController: UINavigationController{
+    
     lazy var navigationIcon : UIImageView = {
        let imageview = UIImageView()
         imageview.image = UIImage(named: "group_2")
