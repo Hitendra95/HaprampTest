@@ -16,6 +16,7 @@ class CustomCell: UITableViewCell{
         
         let dImage = UIImageView()
         dImage.contentMode = .scaleAspectFill
+        dImage.backgroundColor = .white
         return dImage
     }()
     

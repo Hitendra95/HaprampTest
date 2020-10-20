@@ -17,6 +17,7 @@ protocol AppHandler {
     func handleNetworkError()
 }
 
+//MARK: API header class
 class API_Headers
 {
     static let JSON_CONTENT_TYPE = "Content-Type"

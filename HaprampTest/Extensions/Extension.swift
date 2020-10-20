@@ -7,7 +7,9 @@
 
 import Foundation
 import UIKit
+import SkeletonView
 
+//MARK: Extension of UIView to provide anchors
 extension UIView {
 func setAnchors(top:NSLayoutYAxisAnchor?,left:NSLayoutXAxisAnchor?,bottom:NSLayoutYAxisAnchor?,right:NSLayoutXAxisAnchor?,paddingTop:CGFloat,paddingLeft:CGFloat,paddingBottom:CGFloat,paddingRight:CGFloat,height:CGFloat,width:CGFloat)
 {
@@ -45,6 +47,7 @@ func setAnchors(top:NSLayoutYAxisAnchor?,left:NSLayoutXAxisAnchor?,bottom:NSLayo
         }
     }
 
+//MARK : Extension of UIImage to cache image and provide cache data
 let imageCache = NSCache<AnyObject, AnyObject>()
 extension UIImageView
 {
@@ -71,6 +74,8 @@ extension UIImageView
         if url != nil
         {
         //print("url abc  : \(url)")
+            self.isSkeletonable = true
+            self.showAnimatedGradientSkeleton()
         URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) -> Void in
 
             guard error == nil
@@ -81,10 +86,56 @@ extension UIImageView
             performUIUpdatesOnMain {
                 imageCache.setObject(downloadedImage, forKey: urlString as AnyObject)
                 self.image = downloadedImage
+                self.hideSkeleton()
             }
 
 
         }).resume()
         }
+    }
+}
+
+extension UIColor {
+    convenience init(hexString:String) {
+        let hexString:NSString = hexString.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) as NSString
+        let scanner            = Scanner(string: hexString as String)
+        
+        if (hexString.hasPrefix("#")) {
+            scanner.scanLocation = 1
+        }
+        
+        var color:UInt32 = 0
+        scanner.scanHexInt32(&color)
+        
+        let mask = 0x000000FF
+        let r = Int(color >> 16) & mask
+        let g = Int(color >> 8) & mask
+        let b = Int(color) & mask
+        
+        let red   = CGFloat(r) / 255.0
+        let green = CGFloat(g) / 255.0
+        let blue  = CGFloat(b) / 255.0
+        
+        self.init(red:red, green:green, blue:blue, alpha:1)
+    }
+    
+}
+
+extension UIColor{
+    @nonobjc class var translucent: UIColor{
+        return UIColor(hexString: "deffffff")
+    }
+    
+    @nonobjc class var textColor: UIColor{
+        return UIColor(hexString: "de000000")
+    }
+}
+
+extension UIFont{
+    class var robotoRegular14: UIFont {
+        return UIFont(name: "Roboto-Regular", size: 14.0) ?? UIFont.systemFont(ofSize: 14)
+    }
+    class var robotoRegular12: UIFont {
+        return UIFont(name: "Roboto-Regular", size: 12.0) ?? UIFont.systemFont(ofSize: 12)
     }
 }

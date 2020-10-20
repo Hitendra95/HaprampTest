@@ -12,6 +12,7 @@ class Constants {
     static let ERROR_TIMEOUT = "The request timed out."
     static let ERROR_NETWORK_ERROR = "Something went wrong. Please try again."
     static let KEY_STATUS_CODE = "statusCode"
+    static let KEY_Page = "page"
 }
 
 class URls {

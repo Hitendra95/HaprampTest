@@ -13,9 +13,12 @@ class ConnectionHandler{
     var errorMessage : String = ""
     
     //MARK: MAke API call
-    func makeHttpRequest(url: String, reqtype: HTTPMethod,handler:AppHandler, retrycount:Int){
+    func makeHttpRequest(url: String, reqtype: HTTPMethod,data:Dictionary<String, AnyObject>,handler:AppHandler, retrycount:Int){
+        // check retry count
         if retrycount > 0{
-            let params = ["client_id":"D-me78N7gO814UXNRDS96J12JuKyYMBjv_gbV03X7Jw"]
+            var params = data
+            //Add client id to existing parameter
+            params["client_id"] = "D-me78N7gO814UXNRDS96J12JuKyYMBjv_gbV03X7Jw" as AnyObject
             print("URL",url)
             AF.request(url, method: reqtype,parameters: params).responseJSON {
                 response in
@@ -39,7 +42,7 @@ class ConnectionHandler{
                         handler.handleParseError(data: error.localizedDescription)
                     }else{
                         let count = retrycount - 1
-                        self.makeHttpRequest(url: url, reqtype: reqtype,handler: handler,retrycount: count)
+                        self.makeHttpRequest(url: url, reqtype: reqtype, data: data,handler: handler,retrycount: count)
                     }
                 }
             }

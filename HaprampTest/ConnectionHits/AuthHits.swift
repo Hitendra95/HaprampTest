@@ -11,14 +11,14 @@ import Alamofire
 //MARK: Make api call and pass the handler of that api call
 class AuthHits{
     let conn : ConnectionHandler = ConnectionHandler()
-    func GetList(handler:AppHandler)
+    func GetList(data : Dictionary<String, AnyObject>!,handler:AppHandler)
     {
-        conn.makeHttpRequest(url: URls.baseUrl+URls.List_Fetch_Path, reqtype: .get, handler: handler, retrycount: Constants.MAX_RETRY_LIMIT)
+        conn.makeHttpRequest(url: URls.baseUrl+URls.List_Fetch_Path, reqtype: .get, data: data, handler: handler, retrycount: Constants.MAX_RETRY_LIMIT)
     }
     
-    func getRandomImage(handler: AppHandler){
+    func getRandomImage(data : Dictionary<String, AnyObject>!,handler: AppHandler){
         
-        conn.makeHttpRequest(url: URls.baseUrl+URls.Get_Random_Photo, reqtype: .get, handler: handler, retrycount: Constants.MAX_RETRY_LIMIT)
+        conn.makeHttpRequest(url: URls.baseUrl+URls.Get_Random_Photo, reqtype: .get, data: data, handler: handler, retrycount: Constants.MAX_RETRY_LIMIT)
         
     }
 }
