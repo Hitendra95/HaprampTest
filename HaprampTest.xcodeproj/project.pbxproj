@@ -35,6 +35,9 @@
 		DC9CD24D253CA0D600DF1075 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC9CD24C253CA0D600DF1075 /* Assets.xcassets */; };
 		DC9CD250253CA0D600DF1075 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DC9CD24E253CA0D600DF1075 /* LaunchScreen.storyboard */; };
 		DC9CD25D253CA55000DF1075 /* Roboto (1) in Resources */ = {isa = PBXBuildFile; fileRef = DC9CD25C253CA55000DF1075 /* Roboto (1) */; };
+		DCD35D69253E3C9000214FCD /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD35D68253E3C9000214FCD /* NavigationController.swift */; };
+		DCD35D6C253EC66A00214FCD /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD35D6B253EC66A00214FCD /* DetailView.swift */; };
+		DCD35D6F253ECEA600214FCD /* DetailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD35D6E253ECEA600214FCD /* DetailData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +73,9 @@
 		DC9CD24F253CA0D600DF1075 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DC9CD251253CA0D600DF1075 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DC9CD25C253CA55000DF1075 /* Roboto (1) */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Roboto (1)"; sourceTree = "<group>"; };
+		DCD35D68253E3C9000214FCD /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		DCD35D6B253EC66A00214FCD /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		DCD35D6E253ECEA600214FCD /* DetailData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,9 +152,9 @@
 			children = (
 				DC074658253CAD8F00D67927 /* BaseModel.swift */,
 				DC074659253CAD8F00D67927 /* ConnectionModel.swift */,
+				DC07465A253CAD8F00D67927 /* ModelFacade.swift */,
 				DC074657253CAD8F00D67927 /* ListModel.swift */,
 				DC074656253CAD8F00D67927 /* ListParseModel.swift */,
-				DC07465A253CAD8F00D67927 /* ModelFacade.swift */,
 				DC07467F253CD16600D67927 /* RandomImageModel.swift */,
 				DC074682253CD17700D67927 /* RandomImageParseModel.swift */,
 			);
@@ -210,6 +216,7 @@
 			children = (
 				DC4CFA5C253CA83800ED2237 /* ListViewController.swift */,
 				DC07467C253CC7CA00D67927 /* CustomCell.swift */,
+				DCD35D68253E3C9000214FCD /* NavigationController.swift */,
 			);
 			path = ListScreen;
 			sourceTree = "<group>";
@@ -218,6 +225,8 @@
 			isa = PBXGroup;
 			children = (
 				DC4CFA5F253CA86E00ED2237 /* DetailViewController.swift */,
+				DCD35D6B253EC66A00214FCD /* DetailView.swift */,
+				DCD35D6E253ECEA600214FCD /* DetailData.swift */,
 			);
 			path = DetailScreen;
 			sourceTree = "<group>";
@@ -374,12 +383,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC9CD248253CA0D400DF1075 /* CustomSplashViewController.swift in Sources */,
+				DCD35D69253E3C9000214FCD /* NavigationController.swift in Sources */,
 				DC9CD244253CA0D400DF1075 /* AppDelegate.swift in Sources */,
 				DC074671253CAE2C00D67927 /* EventController.swift in Sources */,
 				DC074669253CADF400D67927 /* Handlers.swift in Sources */,
 				DC4CFA60253CA86E00ED2237 /* DetailViewController.swift in Sources */,
 				DC074683253CD17700D67927 /* RandomImageParseModel.swift in Sources */,
 				DC074664253CADD100D67927 /* AuthHits.swift in Sources */,
+				DCD35D6C253EC66A00214FCD /* DetailView.swift in Sources */,
 				DC07465D253CAD8F00D67927 /* BaseModel.swift in Sources */,
 				DC07465C253CAD8F00D67927 /* ListModel.swift in Sources */,
 				DC07465E253CAD8F00D67927 /* ConnectionModel.swift in Sources */,
@@ -391,6 +402,7 @@
 				DC074668253CADF400D67927 /* AuthResponseHandler.swift in Sources */,
 				DC07466E253CAE1F00D67927 /* UpdateViewProtocol.swift in Sources */,
 				DC07465B253CAD8F00D67927 /* ListParseModel.swift in Sources */,
+				DCD35D6F253ECEA600214FCD /* DetailData.swift in Sources */,
 				DC07465F253CAD8F00D67927 /* ModelFacade.swift in Sources */,
 				DC4CFA5D253CA83800ED2237 /* ListViewController.swift in Sources */,
 				DC9CD246253CA0D400DF1075 /* SceneDelegate.swift in Sources */,

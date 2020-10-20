@@ -30,10 +30,11 @@ class EventHanlders: AppHandler
         self.eventName = name
     }
     
+    //handle when data is of type Data
     func handleMessage(data: Data){
         BaseModel.sharedInstanceBaseModel.notifyView(event: eventId, eventtype: ConnectionModel.EVENT_TYPE_SUCCESS)
     }
-    
+    //handle when data is of type Dictionary
     func handleMessage(data: Dictionary<String, AnyObject>) {
         switch eventId{
         case NetworkEvents.EVENT_GET_RandomImage:
@@ -43,7 +44,7 @@ class EventHanlders: AppHandler
         }
         BaseModel.sharedInstanceBaseModel.notifyView(event: eventId, eventtype: ConnectionModel.EVENT_TYPE_SUCCESS)
     }
-    
+    //handle when data is of type Array of object
     func handleMessage(data: Array<AnyObject>) {
         switch eventId {
         case NetworkEvents.EVENT_GET_LIST:
@@ -54,15 +55,17 @@ class EventHanlders: AppHandler
         BaseModel.sharedInstanceBaseModel.notifyView(event: eventId, eventtype: ConnectionModel.EVENT_TYPE_SUCCESS)
     }
     
+    //handle server error
     func handleServerError(data: Dictionary<String,AnyObject>) {
         BaseModel.sharedInstanceBaseModel.notifyView(event: eventId, eventtype: ConnectionModel.EVENT_TYPE_ERROR)
     }
-    
+    //handle parse error
     func handleParseError(data: String) {
         ModelFacade.sharedInstanceModelFacade.getConnectionModel().errorMessage = data
         BaseModel.sharedInstanceBaseModel.notifyView(event: eventId, eventtype: ConnectionModel.EVENT_TYPE_ERROR)
     }
     
+    //handle network error
     func handleNetworkError() {
         BaseModel.sharedInstanceBaseModel.notifyView(event: eventId, eventtype: ConnectionModel.EVENT_TYPE_NETWORKERROR)
     }
